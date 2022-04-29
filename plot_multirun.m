@@ -7,8 +7,8 @@ function [] = plot_multirun(inp,time,xg,legendtitle,legendnames,mode)
 % autoscale the colorbar ranges, otherwise, everything is on the same scale
 
 %% Stuff you might want to change
-latlow=53; %low latitude plot limit
-lathigh=57; %high latitude plot limit
+latlow=54; %low latitude plot limit
+lathigh=56; %high latitude plot limit
 
 Fsized=16; %label font size
 Fsized_leg=14; %legend font size
@@ -152,7 +152,7 @@ title(d,'800 km','Interpreter','latex','FontSize',Tsized);
 xlabel(d,'Mag Lat (deg)','Interpreter','latex','FontSize',Fsized);
 ylabel(d,'Log\(_{10}\) of Density \((m^{-3})\)  ','Interpreter','latex','FontSize',Fsized);
 
-sgtitle('Density Comparison for Winter Non-Counterstreaming Events','Interpreter','latex','FontSize',Tsized)
+sgtitle('Density Comparison for Winter Counterstreaming Events','Interpreter','latex','FontSize',Tsized)
 
 
 figure(2)
@@ -224,9 +224,11 @@ title(lgd,legendtitle,'Interpreter','latex','FontSize',Fsized_leg)
 
 set(lgd2,'Position',[0.010262323417659,0.431308819957644,0.112136176519731,0.079419193556814]);
 set(lgd,'Position',[0.010262323417659,0.431308819957644,0.112136176519731,0.079419193556814]);
+lgd.FontSize=14;
+lgd.Interpreter='LaTeX';
 
 %overall title for plot 2
-sgtitle('Current/Conductivity Comparison for Winter Non-Counterstreaming Events','Interpreter','latex','FontSize',Tsized)
+sgtitle('Current/Conductivity Comparison for Winter Counterstreaming Events','Interpreter','latex','FontSize',Tsized)
 
 end
 
