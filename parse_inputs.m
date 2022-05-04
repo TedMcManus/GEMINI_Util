@@ -7,6 +7,10 @@ arguments
     confloc char % Where is the grid and config
 end
 
+if ~exist(outfolder,'dir')
+    mkdir(outfolder)
+end
+
 %Copy over the grid, config, and initial conditions
 if exist(confloc,'dir')
     try
