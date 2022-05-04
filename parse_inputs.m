@@ -17,7 +17,7 @@ if exist(confloc,'dir')
         copyfile([confloc,filesep,'simgrid.h5'],outfolder);
         copyfile([confloc,filesep,'simsize.h5'],outfolder);
         copyfile([confloc,filesep,'config.nml'],outfolder);
-        copyfile([confloc,filesep,'initial_condtitions.h5'],outfolder);
+        copyfile([confloc,filesep,'initial_conditions.h5'],outfolder);
     catch 
         try
             copyfile([confloc,filesep,'inputs/simgrid.h5'],outfolder);
