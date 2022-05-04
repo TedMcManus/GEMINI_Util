@@ -172,8 +172,8 @@ elseif matches(arc,'Archer')
     mapU=repmat(mapU,1,1,301);
     mapV=zeros(size(mapU));
     mapJ=zeros(size(mapU));
-elseif matches(arc,'MAEVE')
-    [X2,X3,IT] = ndgrid(xg.x2(3:end-2),xg.x3(3:end-2),0:1:cfg.tdur);
+elseif matches(arc,'maeve')
+    [X2,X3,IT] = ndgrid(xg.x2(3:end-2),xg.x3(3:end-2),0:1:confdat.tdur);
     [mapQit,mapE0it,mapJ,mapU,mapV] = MAEVE_map(X2,X3,IT,pars);
 end
 
