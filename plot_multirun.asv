@@ -1,4 +1,4 @@
-function [] = plot_multirun(inp,xg,time,legendtitle,legendnames,autoscale)
+function [] = plot_multirun(inp,xg,time,legendtitle,legendnames,mode)
 %% This function is designed to plot the data gathered by load_multirun
 % First, run data=load_multirun(folderlist), where folderlist is a string array containing
 % names of folders which contain GEMINI output. Then, run this function w/ inp as the output
@@ -12,7 +12,7 @@ arguments
     time double = 0
     legendtitle string = 'legend'
     legendnames string = ""
-    autoscale logical = 1
+    mode string = 'auto'
 end
 
 if strcmp(legendnames,"")
@@ -62,12 +62,19 @@ lbound_right=ind;
 prange=[lbound_left:lbound_right];
 mlatp=mlat(prange);
 
+if ~exist("legendnames",'var')
+    legendnames=names;
+end
+
+if ~exist("mode",'var')
+    mode='auto';
+end
 
 %these are dummy variables that get overwritten on the first loop
 dmax_max=0;
 dmin_min=1000000000;
 
-if autoscale
+if ~strcmp(mode,'auto')
     for i = order
         %Load all the relevant data
         current_struct=inp.(char(names(i)));
@@ -122,7 +129,7 @@ for i = order
     %Plot the densities in altitude order and name them
     hold(a,'on');
     plot(a,mlatp,dens_95p,'DisplayName',char(legendnames(i)),LineWidth=lw)
-    if autoscale
+    if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
 
@@ -130,7 +137,7 @@ for i = order
     axis tight;
     hold(b,'on');
     plot(b,mlatp,dens_120p,'DisplayName',char(legendnames(i)),LineWidth=lw)
-    if autoscale
+    if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
 
@@ -138,7 +145,7 @@ for i = order
     axis tight;
     hold(c,'on');
     plot(c,mlatp,dens_300p,'DisplayName',char(legendnames(i)),LineWidth=lw)
-    if autoscale
+    if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
 
@@ -146,7 +153,7 @@ for i = order
     axis tight;
     hold(d,'on');
     plot(d,mlatp,dens_800p,'DisplayName',char(legendnames(i)),LineWidth=lw)
-    if autoscale
+    if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
 end

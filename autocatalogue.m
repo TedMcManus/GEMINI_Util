@@ -210,7 +210,7 @@ c = colorbar;
 title('Average Energy, E_0','FontSize',fntsz)
 xlabel('mlon [°]','FontSize',fntsz)
 ylabel('mlat [°]','FontSize',fntsz)
-ylabel(c,'keV','FontSize',fntsz)
+ylabel(c,'eV','FontSize',fntsz)
 
 t = subplot(2,3,3);
 pcolor(MLON(:,:,itplot),MLAT(:,:,itplot),mapJ(:,:,itplot)); %Force sign convention
@@ -231,7 +231,7 @@ c = colorbar;
 title('Eastward Flow, U','FontSize',fntsz)
 xlabel('mlon [°]','FontSize',fntsz)
 ylabel('mlat [°]','FontSize',fntsz)
-ylabel(c,'km s^{-1}','FontSize',fntsz)
+ylabel(c,'m s^{-1}','FontSize',fntsz)
 
 t = subplot(2,3,5);
 pcolor(MLON(:,:,itplot),MLAT(:,:,itplot),mapV(:,:,itplot));
@@ -241,7 +241,7 @@ c = colorbar;
 title('Northward Flow, V','FontSize',fntsz)
 xlabel('mlon [°]','FontSize',fntsz)
 ylabel('mlat [°]','FontSize',fntsz)
-ylabel(c,'km s^{-1}','FontSize',fntsz)
+ylabel(c,'m s^{-1}','FontSize',fntsz)
 if pltsv
     print(arc + "_" + string(itplot) + "s.png",'-dpng')
 end

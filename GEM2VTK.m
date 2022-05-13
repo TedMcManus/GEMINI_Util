@@ -1,4 +1,4 @@
-function [] = var2VTK(instruct,folder,filename,xg)
+function [] = GEM2VTK(inp,folder,filename,xg)
 %This is a script for writing a time series of VTK files
 %Can be run in two modes
 %% MODE 1: instruct is a structure from loadvar
@@ -10,10 +10,10 @@ function [] = var2VTK(instruct,folder,filename,xg)
 %ex: var2VTK('./inputfolder','./outputfolder','base_filename',xg)
 
 arguments
-    instruct ; % The result of running loadvar, or a directory where data can be found
-    folder string = "."; %Which folder to write the files to
+    inp ; % The result of running loadvar, or a directory where data can be found
+    folder string = [inp,filesep,'VTKdata']; %Which folder to write the files to
     filename string = "vtkseries"; %Base filename
-    xg = gemini3d.read.grid(instruct); % A grid structure from running xg = gemini3d.read.grid(gridlocation)
+    xg = gemini3d.read.grid(inp); % A grid structure from running xg = gemini3d.read.grid(gridlocation)
 end
 %files are formatted like filename_1, filename_2,...,filename_N
 %The time spacing need not be uniform, but it must be increasing for Paraview to read it
@@ -21,9 +21,9 @@ end
 folder=char(folder);
 filename=char(filename);
 
-if ischar(class(instruct))
+if ischar(class(inp))
     try
-        instruct=loadvar(instruct,[1:31],["density","flow","current","temperature"],xg,[instruct,filesep,'VTK_DATA.mat']);
+        inp=loadvar(inp,[1:31],["density","flow","current","temperature"],xg,[inp,filesep,'VTK_DATA.mat']);
     catch 'Input folder not located';
     end
 end
@@ -59,7 +59,7 @@ z=xg.alt;
 z=z/10000; %To make things visually appealing, alt goes by 10km increments
 %otherwise, the data is an insanely tall and thin rectangle
 
-times=instruct.times;
+times=inp.times;
 
 if smallgrid %Make the grid small
     x=rescale(x);
@@ -85,7 +85,7 @@ nr_of_elements=numel(x);
 tarr=times; %holdover variable from copy-paste heheh
 %need not be uniformly spaced, but must be strictly increasing (I think)
 
-vars=fieldnames(instruct);
+vars=fieldnames(inp);
 
 Scalars=struct; %store data
 scalarnames={}; %store names
@@ -99,7 +99,7 @@ Vec_added=0;
 if any(contains(vars,"ne")) %We're adding electron density
     Scalar_added=1; %we added some scalars
     counter=counter+1;
-    X = instruct.ne;
+    X = inp.ne;
     name='Density';
     scalarnames(counter)={name};
     Scalars=setfield(Scalars,name,X); %frick you I won't do what you tell me
@@ -109,7 +109,7 @@ if any(contains(vars,"Te")) %We're adding electron temperature
     Scalar_added=1; %we added some scalars
     counter=counter+1;
     stop = 0;
-    X = instruct.Te;
+    X = inp.Te;
     name='Temperature';
     scalarnames(counter)={name};
     Scalars=setfield(Scalars,name,X); %hehe
@@ -121,7 +121,7 @@ counter=0;
 if any(contains(vars,"V1")) %We're adding flows
     Vec_added=1; %Have we added some vectors?
     counter=counter+1;
-    [X] = [instruct.V2;instruct.V3;instruct.V1];
+    [X] = [inp.V2;inp.V3;inp.V1];
     name='Flow';
     vectornames(counter)={name};
     Vectors=setfield(Vectors,name,X); %bad practice? yes. Does it work? yes.
@@ -134,7 +134,7 @@ counter=0; %reset the counter
 if any(contains(vars,"J1")) %We're adding current
     Vec_added=1; %Have we added some vectors?
     counter=counter+1;
-    [X] = [instruct.J2;instruct.J3;instruct.J1];
+    [X] = [inp.J2;inp.J3;inp.J1];
     name='Current';
     vectornames(counter)={name};
     Vectors=setfield(Vectors,name,X); %bad practice? yes. Does it work? yes.
