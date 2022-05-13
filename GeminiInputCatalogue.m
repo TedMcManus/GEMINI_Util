@@ -297,8 +297,8 @@ elseif matches(arc,'STEVE')
     pars.STEVE.flagdirich=flagdirich;
     pars.STEVE.ExBG=0;
     pars.STEVE.EyBG=0;
-    pars.STEVE.lbound=usrq('Lower bound (target-1000)',STEVE.vtarg-1000);
-    pars.STEVE.ubound=usrq('Upper bound (target+1000)',STEVE.vtarg+1000);
+    pars.STEVE.lbound=usrq('Lower bound (target-1000)',pars.STEVE.vtarg-1000);
+    pars.STEVE.ubound=usrq('Upper bound (target+1000)',pars.STEVE.vtarg+1000);
     pars.STEVE.steps=usrq('Number of steps (100(matters very little))',100);
     invert = input('Invert the flow definition? (Y:West-East-West,N:East-West-East): ','s');
     isMoving=false;

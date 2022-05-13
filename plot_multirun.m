@@ -7,13 +7,14 @@ function [] = plot_multirun(inp,time,xg,legendtitle,legendnames,mode)
 % autoscale the colorbar ranges, otherwise, everything is on the same scale
 
 %% Stuff you might want to change
-latlow=54; %low latitude plot limit
-lathigh=56; %high latitude plot limit
+latlow=53.8; %low latitude plot limit
+lathigh=56.2; %high latitude plot limit
 
 Fsized=16; %label font size
 Fsized_leg=14; %legend font size
 Tsized=24; %title font size
 
+lw=1;
 %% Stuff you won't want to change
 
 names=fieldnames(inp);
@@ -104,7 +105,7 @@ for i = order
 
     %Plot the densities in altitude order and name them 
     hold(a,'on');
-    plot(a,mlatp,dens_95p,'DisplayName',char(legendnames(i)));
+    plot(a,mlatp,dens_95p,'DisplayName',char(legendnames(i)),LineWidth=lw)
     if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
@@ -112,7 +113,7 @@ for i = order
     b=subplot(2,2,2);
     axis tight;
     hold(b,'on');
-    plot(b,mlatp,dens_120p,'DisplayName',char(legendnames(i)));
+    plot(b,mlatp,dens_120p,'DisplayName',char(legendnames(i)),LineWidth=lw)
     if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
@@ -120,7 +121,7 @@ for i = order
     c=subplot(2,2,3);
     axis tight;
     hold(c,'on');
-    plot(c,mlatp,dens_300p,'DisplayName',char(legendnames(i)));
+    plot(c,mlatp,dens_300p,'DisplayName',char(legendnames(i)),LineWidth=lw)
     if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
@@ -128,7 +129,7 @@ for i = order
     d=subplot(2,2,4);
     axis tight;
     hold(d,'on');
-    plot(d,mlatp,dens_800p,'DisplayName',char(legendnames(i)));
+    plot(d,mlatp,dens_800p,'DisplayName',char(legendnames(i)),LineWidth=lw)
     if ~strcmp(mode,'auto')
         ylim([dmin,dmax]);
     end
@@ -179,22 +180,22 @@ for i = order
     a=subplot(2,2,1);
     axis tight;
     hold(a,'on');
-    plot(a,mlatp,Jparp*10^6,'DisplayName',char(legendnames(i)));
+    plot(a,mlatp,Jparp*10^6,'DisplayName',char(legendnames(i)),LineWidth=lw)
 
     b=subplot(2,2,2);
     axis tight;
     hold(b,'on');
-    plot(b,mlatp,SigmaHp,'DisplayName',char(legendnames(i)));
+    plot(b,mlatp,SigmaHp,'DisplayName',char(legendnames(i)),LineWidth=lw)
 
     c=subplot(2,2,3);
     axis tight;
     hold(c,'on');
-    plot(c,mlatp,SigmaPp,'DisplayName',char(legendnames(i)));
+    plot(c,mlatp,SigmaPp,'DisplayName',char(legendnames(i)),LineWidth=lw)
 
     d=subplot(2,2,4);
     axis tight;
     hold(d,'on');
-    plot(d,mlatp,-V2p,'DisplayName',char(legendnames(i)));
+    plot(d,mlatp,-V2p,'DisplayName',char(legendnames(i)),LineWidth=lw)
 
 end
 
@@ -224,8 +225,15 @@ title(lgd,legendtitle,'Interpreter','latex','FontSize',Fsized_leg)
 
 set(lgd2,'Position',[0.010262323417659,0.431308819957644,0.112136176519731,0.079419193556814]);
 set(lgd,'Position',[0.010262323417659,0.431308819957644,0.112136176519731,0.079419193556814]);
-lgd.FontSize=14;
+lgd.FontSize=12;
 lgd.Interpreter='LaTeX';
+lgd2.FontSize=12;
+lgd2.Interpreter='LaTeX';
+lgd.NumColumns=2;
+lgd2.NumColumns=2;
+lgd.Orientation='horizontal';
+lgd2.Orientation='horizontal';
+
 
 %overall title for plot 2
 sgtitle('Current/Conductivity Comparison for Winter Counterstreaming Events','Interpreter','latex','FontSize',Tsized)
