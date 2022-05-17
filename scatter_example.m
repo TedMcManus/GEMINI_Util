@@ -40,13 +40,13 @@ LNames=tmp;
 %% This part is the section that actually runs the scatter plot
 
 % TO SAVE ALL THE DATA TO A FILE NAMED './SCATTER_DATA.MAT'
-% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'save',null(1),'./scatter_data',icons,"")
+% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'save',null(1),'./scatter_data',icons,"auto")
 
 % TO LOAD ALL THE DATA FROM A FILE NAMED './SCATTER_DATA.MAT'
-% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'load',null(1),'./scatter_data',icons,"")
+% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'load',null(1),'./scatter_data',icons,"auto")
 
 % TO LOAD ALL THE DATA FROM A STRUCTURE IN YOUR WORKSPACE CALLED "SAVE_STRUCT"
-% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'load',save_struct,'./nothing',icons,"")
+% plot_scatters(fldrs,xg,bigtitle,lgdtitle,LNames,'load',save_struct,'./nothing',icons,"auto")
 
 
 %% Anatomy of the function
