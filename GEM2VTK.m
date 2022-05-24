@@ -1,4 +1,4 @@
-function [] = GEM2VTK(inp,folder,filename,xg)
+function [] = GEM2VTK(inp,times,folder,filename,xg)
 %This is a script for writing a time series of VTK files
 %Can be run in two modes
 %% MODE 1: instruct is a structure from loadvar
@@ -11,10 +11,12 @@ function [] = GEM2VTK(inp,folder,filename,xg)
 
 arguments
     inp ; % The result of running loadvar, or a directory where data can be found
+    times = [1:31] % array of timesteps
     folder string = [inp,filesep,'VTKdata']; %Which folder to write the files to
     filename string = "vtkseries"; %Base filename
     xg = gemini3d.read.grid(inp); % A grid structure from running xg = gemini3d.read.grid(gridlocation)
 end
+tic;
 %files are formatted like filename_1, filename_2,...,filename_N
 %The time spacing need not be uniform, but it must be increasing for Paraview to read it
 
@@ -23,7 +25,7 @@ filename=char(filename);
 
 if ischar(class(inp))
     try
-        inp=loadvar(inp,[1:31],["density","flow","current","temperature"],xg,[inp,filesep,'VTK_DATA.mat']);
+        inp=loadvar(inp,times,["density","flow","current","temperature"],xg,[inp,filesep,'VTK_DATA.mat']);
     catch 'Input folder not located';
     end
 end
@@ -31,24 +33,19 @@ end
 %% These are important user paramters
 
 geogrid=0; %should we use a geographic space? if zero, use lat/lon
-smallgrid=0; %rescale into (unphysical) box bounded between 0 and 1?
+smallgrid=1; %rescale into (unphysical) box bounded between 0 and 1?
 %If you don't do this, you will not have a nice square grid in Paraview
 %However, turning this on is unrealistic compared to the real grid spacing
 
 %% Load in relevant data
-
-if ~exist(folder,'dir')
-    mkdir(folder);
-else
-    try % try to make a folder inside the folder the user specified to avoid clutter
-        mkdir([folder,filesep,filename,'_VTKtimeseries']);
-        folder=[folder,filesep,filename,'_VTKtimeseries'];
-    catch ['A VTK Timeseries named ',filename, ' already exists in this location. It will be overwritten'];
-        %This will be thrown if we try to write a folder that already exists, which implies we've run this
-        %script before and we're going to be overwriting data. The user should know that. They probably won't
-        %be able to stop us in time, but better late than later :)
-    end
+[~,errcase]=mkdir(folder);
+if strcmp(errcase,'Directory already exists.')
+disp(['A VTK Timeseries named ',filename, ' already exists in this location. It will be overwritten'])
+    %This will be thrown if we try to write a folder that already exists, which implies we've run this
+    %script before and we're going to be overwriting data. The user should know that. They can probably
+    % stop us in time :)
 end
+
 
 %MLAT/MLON grid
 MLAT=90-squeeze(xg.theta(:,:,:))*180/pi;
@@ -66,7 +63,6 @@ if smallgrid %Make the grid small
     y=rescale(y);
     z=rescale(z);
 end
-tic
 
 if geogrid %use glat/glon
     x=xg.glon;
@@ -127,10 +123,6 @@ if any(contains(vars,"V1")) %We're adding flows
     Vectors=setfield(Vectors,name,X); %bad practice? yes. Does it work? yes.
 end
 
-Vectors=struct; %Stores the data
-vectornames={}; %Stores the field names
-counter=0; %reset the counter
-
 if any(contains(vars,"J1")) %We're adding current
     Vec_added=1; %Have we added some vectors?
     counter=counter+1;
@@ -145,7 +137,7 @@ counter=0; %again, to keep track of iterations in the for loop
 for i=tarr
     % Some code is from vtkwrite.m from the file exchange, some code is back-engineered from the VTK
     % specification document, some is fresh off the noggin. This is the result of an immense amount of
-    % suffering. Hopefully nobody ever needs to read this comment, but if you are, appreciate my Herculean
+    % suffering. Hopefully nobody ever needs to read this comment, but if you do, appreciate my Herculean
     % efforts to slay the exception-rasing hydra that is Paraview.
 
     counter=counter+1;

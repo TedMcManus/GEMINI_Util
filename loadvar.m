@@ -55,31 +55,25 @@ for i = times %timestep number
     frame=gemini3d.datelab(E_times(i));
     frame=[char(frame),'.h5'];
     counter=counter+1;
+    dat=gemini3d.read.frame(frame);
     
     %Read all the data we want
     if is_density
         tmpvar=h5read(frame,'/nsall');
-        ne(:,:,:,counter)=tmpvar(:,:,:,7);
+        ne(:,:,:,counter)=dat.ne;
     end
     if is_temp
-        tmpvar=h5read(frame,'/Tsall');
-        Te(:,:,:,counter)=tmpvar(:,:,:,7);
+        Te(:,:,:,counter)=dat.Te;
     end
     if is_flow
-        tmpvar=h5read(frame,'/vs1all');
-        V1(:,:,:,counter)=mean(tmpvar,4);
-        tmpvar=h5read(frame,'/v2avgall');
-        V2(:,:,:,counter)=tmpvar(:,:,:);
-        tmpvar=h5read(frame,'/v3avgall');
-        V3(:,:,:,counter)=tmpvar(:,:,:);
+        V1(:,:,:,counter)=dat.v1;
+        V2(:,:,:,counter)=dat.v2;
+        V3(:,:,:,counter)=dat.v3;
     end
     if is_current
-        tmpvar=h5read(frame,'/J1all');
-        J1(:,:,:,counter)=tmpvar;
-        tmpvar=h5read(frame,'/J2all');
-        J2(:,:,:,counter)=tmpvar(:,:,:);
-        tmpvar=h5read(frame,'/J3all');
-        J3(:,:,:,counter)=tmpvar(:,:,:);
+        J1(:,:,:,counter)=dat.J1;
+        J2(:,:,:,counter)=dat.J2;
+        J3(:,:,:,counter)=dat.J3;
     end
     
 end
